@@ -27,6 +27,7 @@ type rpcEntry struct {
 	ClientID      string `json:"client_id"`
 	Details       string `json:"details"`
 	State         string `json:"state"`
+	IconURL       string `json:"icon_url"`
 	LargeText     string `json:"large_text"`
 	SmallImage    string `json:"small_image"`
 	SmallText     string `json:"small_text"`
@@ -38,6 +39,7 @@ type appConfig struct {
 	SteamGridDBKey string              `json:"steamgriddb_api_key"`
 	Default        rpcEntry            `json:"default"`
 	Games          map[string]rpcEntry `json:"games"`
+	Icons          map[string]string   `json:"icons"`
 }
 
 type launchContext struct {
@@ -403,7 +405,14 @@ func main() {
 	// Pre-fetch icon and build activity once so reconnect retries don't re-fetch.
 	var rpcActivity client.Activity
 	if hasRPC {
-		iconURL := fetchSteamGridIcon(loadedConfig.SteamGridDBKey, ctx.AppID)
+		iconURL := entry.IconURL
+		if iconURL == "" {
+			if url, ok := loadedConfig.Icons[ctx.AppID]; ok && url != "" {
+				iconURL = url
+			} else {
+				iconURL = fetchSteamGridIcon(loadedConfig.SteamGridDBKey, ctx.AppID)
+			}
+		}
 		rpcActivity = buildActivity(entry, ctx, iconURL)
 	} else {
 		warnMissingGameConfig(loadedConfig, ctx)
