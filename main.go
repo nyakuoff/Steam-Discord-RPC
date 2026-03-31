@@ -250,7 +250,7 @@ func resolveRPCEntry(cfg appConfig, ctx launchContext) (rpcEntry, bool) {
 		if entry.State == "" {
 			entry.State = def.State
 		}
-			if entry.LargeText == "" {
+		if entry.LargeText == "" {
 			entry.LargeText = def.LargeText
 		}
 		if entry.SmallImage == "" {
@@ -259,10 +259,6 @@ func resolveRPCEntry(cfg appConfig, ctx launchContext) (rpcEntry, bool) {
 		if entry.SmallText == "" {
 			entry.SmallText = def.SmallText
 		}
-	}
-
-	if entry.Details == "" {
-		entry.Details = "Playing {game_name}"
 	}
 
 	entry.Details = expandTemplate(entry.Details, ctx)
