@@ -24,13 +24,14 @@ import (
 )
 
 type rpcEntry struct {
-	ClientID    string `json:"client_id"`
-	Details     string `json:"details"`
-	State       string `json:"state"`
-	LargeText   string `json:"large_text"`
-	SmallImage  string `json:"small_image"`
-	SmallText   string `json:"small_text"`
-	NoTimestamp bool   `json:"no_timestamp"`
+	ClientID      string `json:"client_id"`
+	Details       string `json:"details"`
+	State         string `json:"state"`
+	LargeText     string `json:"large_text"`
+	SmallImage    string `json:"small_image"`
+	SmallText     string `json:"small_text"`
+	NoTimestamp   bool   `json:"no_timestamp"`
+	NoSteamButton bool   `json:"no_steam_button"`
 }
 
 type appConfig struct {
@@ -314,6 +315,12 @@ func buildActivity(entry rpcEntry, ctx launchContext, iconURL string) client.Act
 	if !entry.NoTimestamp {
 		start := time.Now()
 		activity.Timestamps = &client.Timestamps{Start: &start}
+	}
+
+	if !entry.NoSteamButton && ctx.AppID != "" && ctx.AppID != "unknown" {
+		activity.Buttons = []*client.Button{
+			{Label: "View on Steam", Url: "https://store.steampowered.com/app/" + ctx.AppID},
+		}
 	}
 
 	return activity
