@@ -1,0 +1,12 @@
+{
+  "steamgriddb_api_key": "your_steamgriddb_api_key_here",
+  "default": {
+    "client_id": "123456789012345678",
+    "details": "Playing {game_name}",
+    "state": "App ID: {app_id}",
+    "large_text": "{game_name}",
+    "small_image": "",
+    "small_text": "",
+    "no_timestamp": false
+  }
+}
